@@ -1,0 +1,33 @@
+package Proj6;
+
+public class ItemSong {
+
+	private double songLength;
+	private static String songTitle;
+	private static String artist;
+	private static String songFileName;
+
+	public ItemSong(String artist, String songTitle, String songFileName, double songLength) {
+
+		this.artist = artist;
+		this.songTitle = songTitle;
+		this.songFileName = songFileName;
+		this.songLength = songLength;
+	}
+
+	public double getSongLength() {
+		return songLength;
+	}
+
+	public String getSongTitle() {
+		return songTitle;
+	}
+
+	public String getArtistName() {
+		return artist;
+	}
+
+	public String toString() {
+		return artist + " - " + songTitle + " - " + songLength;
+	}
+}
