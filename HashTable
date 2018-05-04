@@ -1,0 +1,104 @@
+package Proj6;
+
+import java.util.Arrays;
+
+public class HashTable {
+	private static Object[] theArray;
+	private static Object[] theArrayArtist;
+	private static int theSize = 1000;
+	private int amountOfArtists;
+	private int amountOfObjects;
+
+	public HashTable() {
+		theArray = new Object[theSize];
+		theArrayArtist = new Object[theSize];
+		amountOfArtists = 0;
+		amountOfObjects = 0;
+	}
+
+	public HashTable(int x) {
+		theSize = x;
+		theArray = new Object[theSize];
+		theArrayArtist = new Object[theSize];
+		amountOfArtists = 0;
+		amountOfObjects = 0;
+
+	}
+
+	public void addSong(ItemSong x) {
+		if (amountOfObjects == theArray.length) {
+			theArray = Arrays.copyOf(theArray, theSize * 2);
+			theSize = theSize * 2;
+		}
+		theArray[hashCode(x.getSongTitle())] = x;
+		amountOfObjects++;
+
+		if (theArrayArtist[hashCode(x.getArtistName())] != null) {
+			ItemArtist artistobj = (ItemArtist) theArrayArtist[hashCode(x.getArtistName())];
+			artistobj.theArrayList.add(x);
+            artistobj.songs += "\n" + x.getSongTitle();
+           
+            
+
+		} else {
+			ItemArtist artist = new ItemArtist(x.getArtistName(), x.getSongTitle(), x);
+			theArrayArtist[hashCode(x.getArtistName())] = artist;
+			amountOfArtists++;
+		}
+
+	}
+
+	public static Object find(String x) {
+		int hash = hashCode(x);
+		
+		if (theArray[hash] != null) {
+			ItemSong temp = (ItemSong) theArray[hash];
+			System.out.println(temp);
+			return temp;
+		} else if (theArrayArtist[hash] != null) {
+			ItemArtist temp = (ItemArtist) theArrayArtist[hash];
+			return temp.songs;
+		}
+		 
+		return null;
+
+	}
+
+	public static int hashCode(String x) {
+        char[] temp = x.toCharArray();
+        int hash = 3;
+        for (int i = 1; i < temp.length+1; i++) {
+        	hash += (int) (Math.pow((int) temp[i-1] * 7, i%3));
+        	
+        }
+		return hash % theSize;
+
+	}
+
+	public static void main(String[] args) {
+		
+		HashTable hash = new HashTable();
+		//ItemSong itm1 = new ItemSong("Eminem", "Love the way you lie", "/asdaölsdfklö", 2.201);
+		//ItemSong itm2 = new ItemSong("Eminem", "Lose Yourself", "/asdaölkslö", 2.205);
+		//ItemSong itm3 = new ItemSong("FooFighters", "hej kom o hjälp mig", "/asdaöhlklö", 2.204);
+		hash.addSong(new ItemSong("Eminem", "Love the way you lie", "/asdaölsdfklö", 2.201));
+		hash.addSong(new ItemSong("Eminem", "Lose Yourself", "/asdaölkslö", 2.205));
+		hash.addSong(new ItemSong("FooFighters", "hej kom o hjälp mig", "/asdaöhlklö", 2.204));
+		
+		System.out.println(hash.find("Love the way you lie"));
+		for (int i = 0; i < theArray.length; i++) {
+			if(theArray[i] != null)
+				System.out.println(i);
+		}
+		System.out.println("----------------");
+		
+        
+		System.out.println(hashCode("Love the way you lie"));
+		System.out.println(hashCode("Lose Yourself"));
+		//System.out.println(hashCode("Andreas hall"));
+		//System.out.println(hashCode("Gustav asd"));
+		
+		
+	}
+
+}
